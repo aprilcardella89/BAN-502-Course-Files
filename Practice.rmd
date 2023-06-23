@@ -1,0 +1,79 @@
+```{r}
+library(tidyverse) #tidyverse set of packages and functions
+library(tidymodels)
+library(glmnet) #for Lasso, ridge, and elastic net models 
+library(GGally) #create ggcorr and ggpairs plots
+library(ggcorrplot) #create an alternative to ggcorr plots
+library(MASS) #access to forward and backward selection algorithms
+library(leaps) #best subset selection
+library(lmtest) #for the dw test
+library(splines) #for nonlinear fitting
+library(car) #for calculating the variance inflation factor
+library(lubridate)
+
+```
+
+```{r}
+
+rm(bike)
+
+bike <- read_csv("bike_cleaned-3.csv", 
+    col_types = cols(dteday = col_date(format = "%m/%d/%Y")))
+
+bike = bike %>% mutate_if(is.character, as.factor)
+
+
+
+bike = bike %>% mutate(hr = as_factor(hr))
+
+
+glimpse(bike)
+
+```
+
+```{r}
+
+set.seed(1234)
+bike_split = initial_split(bike, prop = 0.70, strata = count)
+train = training(bike_split)
+test = testing(bike_split)
+
+
+
+```
+
+
+
+
+
+```{r}
+
+rm(lm_wflow)
+
+
+
+
+
+
+```
+
+```{r}
+
+summary(lm_fit$fit$fit$fit)
+
+
+
+```
+
+
+```{r}
+
+lm_fit %>% predict(test) %>% bind_cols(test) %>% metrics(truth = count, estimate = .pred)
+
+
+
+```
+
+
+
+
