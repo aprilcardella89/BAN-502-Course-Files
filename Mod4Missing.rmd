@@ -1,0 +1,47 @@
+```{r}
+
+library(tidyverse)
+library(mice) 
+library(VIM) 
+
+
+```
+
+```{r}
+
+grades<- read_csv("class-grades (1).csv")
+
+
+```
+
+```{r}
+
+str(grades)
+summary(grades)
+skim(grades)
+
+vim_plot = aggr(grades, numbers = TRUE, prop = c(TRUE, FALSE),cex.axis=.7)
+
+```
+```{r}
+
+gradesc_rowdel = grades %>% drop_na()
+
+
+gradesc_coldel = grades %>% select(-Tutorial, -Midterm,-TakeHome,-Final)
+
+set.seed(123)
+imp_age = mice(grades, m=5, method='pmm', printFlag=FALSE)
+summary(imp_age)
+
+```
+
+```{r}
+
+densityplot(imp_age, ~Final)
+
+grades_complete = complete(imp_age) 
+summary(grades_complete)
+
+```
+
